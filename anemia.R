@@ -1,6 +1,8 @@
 
 source("packages.R")
 
+
+
 # Why this dataset?
 
 # The reason for selecting this dataset is to gain more information related to pregnancy,
@@ -82,16 +84,15 @@ checkdata
 #groupCountry
 # Caveat : Merging the data will delete the region that are not present in the worldmap dataset.
 
-world <- ggplot() +
+letdoit <- inner_join(worldmap, PregData, by = "region")
+
+head(letdoit)
+
+
+
+o <- ggplot() + geom_polygon(data = worldmap,aes(x = long,y = lat,group = group)) +
   borders("world", colour = "gray85", fill = "gray80") +
-  theme_map() 
-
-world
-
-
-map <- world +
-  geom_point(aes(x = long, y = lat, size = Percentage_Anemia,group = group),
-             data = checkdata, 
-             colour = 'purple', alpha = .5)
-map
+  theme_map() +
+  geom_polygon(data = letdoit,aes(x = long,y = lat,fill = Percentage_Anemia,group = group,frame = Year))
+o
 
